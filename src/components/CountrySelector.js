@@ -1,12 +1,34 @@
+import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCountryInLocalStorage } from '../helpers/countryHelpers';
+import { localeActions } from '../store/slices/locale-slice';
+
 const CountrySelector = () => {
+  console.log('render 1');
+
+  const dispatch = useDispatch();
+  const countryState = useSelector((state) => state.locale.countryCode);
+  const countrySelectorRef = useRef('');
+
+  const changeCountryHandler = () => {
+    const countryCode = countrySelectorRef.current.value;
+    if (countryCode === 'select') {
+      return;
+    }
+    dispatch(localeActions.updateCountryCode(countryCode));
+    setCountryInLocalStorage(countryCode);
+  };
+
   return (
     <select
+      ref={countrySelectorRef}
+      onChange={changeCountryHandler}
       id="countries"
+      value={countryState}
       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4 md:mb-0"
     >
-      <option>Country</option>
+      <option value="select">Selecy country</option>
       <option value="AF">Afghanistan</option>
-      <option value="AX">Aland Islands</option>
       <option value="AL">Albania</option>
       <option value="DZ">Algeria</option>
       <option value="AS">American Samoa</option>
@@ -35,7 +57,6 @@ const CountrySelector = () => {
       <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
       <option value="BA">Bosnia and Herzegovina</option>
       <option value="BW">Botswana</option>
-      <option value="BV">Bouvet Island</option>
       <option value="BR">Brazil</option>
       <option value="IO">British Indian Ocean Territory</option>
       <option value="BN">Brunei Darussalam</option>
@@ -51,10 +72,8 @@ const CountrySelector = () => {
       <option value="TD">Chad</option>
       <option value="CL">Chile</option>
       <option value="CN">China</option>
-      <option value="CX">Christmas Island</option>
       <option value="CC">Cocos (Keeling) Islands</option>
       <option value="CO">Colombia</option>
-      <option value="KM">Comoros</option>
       <option value="CG">Congo</option>
       <option value="CD">Congo, Democratic Republic of the Congo</option>
       <option value="CK">Cook Islands</option>
@@ -66,7 +85,6 @@ const CountrySelector = () => {
       <option value="CY">Cyprus</option>
       <option value="CZ">Czech Republic</option>
       <option value="DK">Denmark</option>
-      <option value="DJ">Djibouti</option>
       <option value="DM">Dominica</option>
       <option value="DO">Dominican Republic</option>
       <option value="EC">Ecuador</option>
@@ -81,9 +99,6 @@ const CountrySelector = () => {
       <option value="FJ">Fiji</option>
       <option value="FI">Finland</option>
       <option value="FR">France</option>
-      <option value="GF">French Guiana</option>
-      <option value="PF">French Polynesia</option>
-      <option value="TF">French Southern Territories</option>
       <option value="GA">Gabon</option>
       <option value="GM">Gambia</option>
       <option value="GE">Georgia</option>
@@ -101,7 +116,6 @@ const CountrySelector = () => {
       <option value="GW">Guinea-Bissau</option>
       <option value="GY">Guyana</option>
       <option value="HT">Haiti</option>
-      <option value="HM">Heard Island and Mcdonald Islands</option>
       <option value="VA">Holy See (Vatican City State)</option>
       <option value="HN">Honduras</option>
       <option value="HK">Hong Kong</option>
@@ -109,10 +123,9 @@ const CountrySelector = () => {
       <option value="IS">Iceland</option>
       <option value="IN">India</option>
       <option value="ID">Indonesia</option>
-      <option value="IR">Iran, Islamic Republic of</option>
+      <option value="IR">Iran</option>
       <option value="IQ">Iraq</option>
       <option value="IE">Ireland</option>
-      <option value="IM">Isle of Man</option>
       <option value="IL">Israel</option>
       <option value="IT">Italy</option>
       <option value="JM">Jamaica</option>
@@ -121,8 +134,6 @@ const CountrySelector = () => {
       <option value="JO">Jordan</option>
       <option value="KZ">Kazakhstan</option>
       <option value="KE">Kenya</option>
-      <option value="KI">Kiribati</option>
-      <option value="KP">Korea, Democratic People's Republic of</option>
       <option value="KR">Korea, Republic of</option>
       <option value="XK">Kosovo</option>
       <option value="KW">Kuwait</option>
@@ -132,12 +143,11 @@ const CountrySelector = () => {
       <option value="LB">Lebanon</option>
       <option value="LS">Lesotho</option>
       <option value="LR">Liberia</option>
-      <option value="LY">Libyan Arab Jamahiriya</option>
       <option value="LI">Liechtenstein</option>
       <option value="LT">Lithuania</option>
       <option value="LU">Luxembourg</option>
       <option value="MO">Macao</option>
-      <option value="MK">Macedonia, the Former Yugoslav Republic of</option>
+      <option value="MK">Macedonia</option>
       <option value="MG">Madagascar</option>
       <option value="MW">Malawi</option>
       <option value="MY">Malaysia</option>
@@ -204,7 +214,6 @@ const CountrySelector = () => {
       <option value="SA">Saudi Arabia</option>
       <option value="SN">Senegal</option>
       <option value="RS">Serbia</option>
-      <option value="CS">Serbia and Montenegro</option>
       <option value="SC">Seychelles</option>
       <option value="SL">Sierra Leone</option>
       <option value="SG">Singapore</option>
@@ -214,13 +223,11 @@ const CountrySelector = () => {
       <option value="SB">Solomon Islands</option>
       <option value="SO">Somalia</option>
       <option value="ZA">South Africa</option>
-      <option value="GS">South Georgia and the South Sandwich Islands</option>
       <option value="SS">South Sudan</option>
       <option value="ES">Spain</option>
       <option value="LK">Sri Lanka</option>
       <option value="SD">Sudan</option>
       <option value="SR">Suriname</option>
-      <option value="SJ">Svalbard and Jan Mayen</option>
       <option value="SZ">Swaziland</option>
       <option value="SE">Sweden</option>
       <option value="CH">Switzerland</option>
@@ -229,7 +236,6 @@ const CountrySelector = () => {
       <option value="TJ">Tajikistan</option>
       <option value="TZ">Tanzania, United Republic of</option>
       <option value="TH">Thailand</option>
-      <option value="TL">Timor-Leste</option>
       <option value="TG">Togo</option>
       <option value="TK">Tokelau</option>
       <option value="TO">Tonga</option>
@@ -237,23 +243,17 @@ const CountrySelector = () => {
       <option value="TN">Tunisia</option>
       <option value="TR">Turkey</option>
       <option value="TM">Turkmenistan</option>
-      <option value="TC">Turks and Caicos Islands</option>
       <option value="TV">Tuvalu</option>
       <option value="UG">Uganda</option>
       <option value="UA">Ukraine</option>
       <option value="AE">United Arab Emirates</option>
       <option value="GB">United Kingdom</option>
       <option value="US">United States</option>
-      <option value="UM">United States Minor Outlying Islands</option>
       <option value="UY">Uruguay</option>
       <option value="UZ">Uzbekistan</option>
       <option value="VU">Vanuatu</option>
       <option value="VE">Venezuela</option>
       <option value="VN">Viet Nam</option>
-      <option value="VG">Virgin Islands, British</option>
-      <option value="VI">Virgin Islands, U.s.</option>
-      <option value="WF">Wallis and Futuna</option>
-      <option value="EH">Western Sahara</option>
       <option value="YE">Yemen</option>
       <option value="ZM">Zambia</option>
       <option value="ZW">Zimbabwe</option>
