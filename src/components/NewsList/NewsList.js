@@ -26,7 +26,9 @@ const NewsList = () => {
 
   return (
     <Fragment>
-      <h3 className="min-w-full text-left text-xl">Headlines</h3>
+      <h3 className="min-w-full text-left text-xl dark:text-slate-200">
+        Headlines
+      </h3>
       <div className="min-w-full">
         <ul>
           <InfiniteScroll

@@ -2,7 +2,7 @@ import biden from '../../biden.jpg';
 
 const NewsItem = ({ news }) => {
   return (
-    <li className="mt-4 pb-4 border-b-2 border-solid border-slate-400 last:border-b-0">
+    <li className="mt-4 pb-4 border-b-2 border-solid border-slate-400 last:border-b-0 dark:text-slate-200	">
       <div className="flex flex-col md:flex-row">
         <img
           className="max-w-full mb-2 md:max-w-md md:mr-4"
@@ -19,7 +19,7 @@ const NewsItem = ({ news }) => {
           >
             {news.headline}
           </a>
-          <p className="text-xs	text-slate-400">4 hours ago</p>
+          <p className="text-xs	text-slate-400 mt-2">4 hours ago</p>
         </div>
       </div>
     </li>

@@ -4,8 +4,6 @@ import { setCountryInLocalStorage } from '../helpers/countryHelpers';
 import { localeActions } from '../store/slices/locale-slice';
 
 const CountrySelector = () => {
-  console.log('render 1');
-
   const dispatch = useDispatch();
   const countryState = useSelector((state) => state.locale.countryCode);
   const countrySelectorRef = useRef('');
