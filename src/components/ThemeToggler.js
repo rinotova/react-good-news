@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleDarkTheme } from '../helpers/theme-helpers';
+import { toggleDarkTheme } from '../helpers/themeHelpers';
 import { themeActions } from '../store/slices/theme-slice';
 
 const ThemeToggler = () => {

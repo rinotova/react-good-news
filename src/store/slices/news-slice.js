@@ -1,20 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialNewsState = {
-  newsList: [
-    {
-      id: 'n1',
-      headline:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-      url: '/',
-    },
-    {
-      id: 'n2',
-      headline:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-      url: '/',
-    },
-  ],
+  newsList: [],
+  newsPageAt: 1,
+  totalResults: 0,
 };
 
 const newsList = createSlice({
@@ -23,6 +12,13 @@ const newsList = createSlice({
   reducers: {
     updateNewsList(state, action) {
       state.newsList = state.newsList.concat(action.payload);
+      state.newsPageAt = state.newsPageAt + 1;
+    },
+    resetPageAt(state) {
+      state.newsPageAt = 1;
+    },
+    setTotalResults(state, action) {
+      state.totalResults = action.payload;
     },
   },
 });

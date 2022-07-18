@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { isDarkThemeEnabled } from '../../helpers/theme-helpers';
+import { isDarkThemeEnabled } from '../../helpers/themeHelpers';
 
 const initialThemeState = {
   isDarkTheme:

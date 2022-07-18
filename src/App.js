@@ -9,24 +9,27 @@ import {
   setCountryInLocalStorage,
 } from './helpers/countryHelpers';
 import { localeActions } from './store/slices/locale-slice';
-import { toggleDarkTheme } from './helpers/theme-helpers';
-import { isDarkThemeEnabled } from './helpers/theme-helpers';
+import { toggleDarkTheme } from './helpers/themeHelpers';
+import { isDarkThemeEnabled } from './helpers/themeHelpers';
 import store from './store';
 
 function App() {
   const dispatch = useDispatch();
 
+  const setDarkThemeIfNecessary = () => {
+    const isThemedDarkModeInit = store.getState().theme.isDarkTheme;
+    const isDarkThemeActive = isDarkThemeEnabled() || isThemedDarkModeInit;
+
+    if (isDarkThemeActive) {
+      document.documentElement.classList.add('dark');
+      toggleDarkTheme(true);
+    }
+  };
+
+  setDarkThemeIfNecessary();
+
   useEffect(() => {
     console.log('use effect app');
-    const setDarkThemeIfNecessary = () => {
-      const isThemedDarkModeInit = store.getState().theme.isDarkTheme;
-      const isDarkThemeActive = isDarkThemeEnabled() || isThemedDarkModeInit;
-
-      if (isDarkThemeActive) {
-        document.documentElement.classList.add('dark');
-        toggleDarkTheme(true);
-      }
-    };
 
     const setCountryIfNecessary = async () => {
       let country = getCountryFromLocalStorage();
@@ -36,12 +39,12 @@ function App() {
         dispatch(localeActions.updateCountryCode(country));
       }
     };
-    setDarkThemeIfNecessary();
+
     setCountryIfNecessary();
   }, [dispatch]);
 
   return (
-    <div className="dark:bg-gray-800">
+    <div className="dark:bg-gray-800 min-h-screen">
       <NavbarComp />
       <div className="max-w-[900px] flex flex-col my-0 mx-auto p-4 items-center">
         <Header />

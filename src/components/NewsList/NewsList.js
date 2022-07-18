@@ -1,13 +1,51 @@
-import { Fragment } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import NewsItem from './NewsItem';
 import { newsListActions } from '../../store/slices/news-slice';
 import Spinner from '../Spinner/Spinner';
+import useFetch from '../../hooks/use-fetch';
+import { getTransformedNews } from '../../helpers/newsHelpers';
+import store from '../../store';
 
 const NewsList = () => {
+  const [triggerSearch, setTriggerSearch] = useState(false);
   const dispatch = useDispatch();
   const news = useSelector((state) => state.news.newsList);
+  const countryCode = useSelector((state) => state.locale.countryCode);
+  const { isLoading, isFetchError, sendRequest } = useFetch();
+
+  const processNews = useCallback(
+    (newsData) => {
+      console.log(newsData);
+      dispatch(newsListActions.setTotalResults(newsData.totalResults));
+
+      const transformedNews = getTransformedNews(newsData.articles);
+
+      if (transformedNews.length === 0) {
+        return;
+      }
+      dispatch(newsListActions.updateNewsList(transformedNews));
+      console.log(transformedNews);
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (countryCode === 'select') {
+      return;
+    }
+    console.log('fetching');
+    sendRequest(
+      `https://newsapi.org/v2/top-headlines?country=${countryCode}&pageSize=10`,
+      {
+        headers: {
+          'X-Api-Key': process.env.REACT_APP_NEWS_API_KEY,
+        },
+      },
+      processNews
+    );
+  }, [countryCode, sendRequest, processNews, triggerSearch]);
 
   if (news.length === 0) {
     return;
@@ -18,10 +56,9 @@ const NewsList = () => {
   ));
 
   const fetchMoreNewsHandler = () => {
-    console.log('fetching');
-    setTimeout(() => {
-      dispatch(newsListActions.updateNewsList(news));
-    }, 1500);
+    if (!isLoading && !isFetchError) {
+      setTriggerSearch((trigger) => !trigger);
+    }
   };
 
   return (
@@ -34,7 +71,7 @@ const NewsList = () => {
           <InfiniteScroll
             dataLength={newsList.length}
             next={fetchMoreNewsHandler}
-            hasMore={true}
+            hasMore={newsList.length < store.getState().news.totalResults}
             loader={<Spinner />}
           >
             {newsList}

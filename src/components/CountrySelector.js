@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCountryInLocalStorage } from '../helpers/countryHelpers';
 import { localeActions } from '../store/slices/locale-slice';
+import { newsListActions } from '../store/slices/news-slice';
 
 const CountrySelector = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const CountrySelector = () => {
     if (countryCode === 'select') {
       return;
     }
+    dispatch(newsListActions.resetPageAt());
     dispatch(localeActions.updateCountryCode(countryCode));
     setCountryInLocalStorage(countryCode);
   };
