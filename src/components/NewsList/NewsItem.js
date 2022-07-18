@@ -18,7 +18,7 @@ const NewsItem = ({ news }) => {
           >
             {news.headline}
           </a>
-          <p className="text-xs	text-slate-400 mt-2">{news.publishedAt}</p>
+          <p className="text-xs	text-slate-400 mt-2">{news.publishedAt} ago</p>
         </div>
       </div>
     </li>

@@ -10,6 +10,9 @@ const newsList = createSlice({
   name: 'news',
   initialState: initialNewsState,
   reducers: {
+    resetNewsList(state) {
+      state.newsList = [];
+    },
     updateNewsList(state, action) {
       state.newsList = state.newsList.concat(action.payload);
       state.newsPageAt = state.newsPageAt + 1;

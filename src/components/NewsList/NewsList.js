@@ -47,7 +47,9 @@ const NewsList = () => {
     );
   }, [countryCode, sendRequest, processNews, triggerSearch]);
 
-  if (news.length === 0) {
+  if (news.length === 0 && !isLoading) {
+    return <p className="mt-3 text-lg dark:text-white">No results found.</p>;
+  } else if (isLoading) {
     return;
   }
 

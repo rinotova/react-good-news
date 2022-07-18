@@ -16,6 +16,8 @@ const CountrySelector = () => {
     }
     dispatch(newsListActions.resetPageAt());
     dispatch(localeActions.updateCountryCode(countryCode));
+    dispatch(newsListActions.resetNewsList());
+
     setCountryInLocalStorage(countryCode);
   };
 
