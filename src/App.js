@@ -9,17 +9,22 @@ import {
   setCountryInLocalStorage,
 } from './helpers/countryHelpers';
 import { localeActions } from './store/slices/locale-slice';
+import { toggleDarkTheme } from './helpers/theme-helpers';
 import { isDarkThemeEnabled } from './helpers/theme-helpers';
+import store from './store';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log('use effect app');
     const setDarkThemeIfNecessary = () => {
-      const isDarkThemeActive = isDarkThemeEnabled();
+      const isThemedDarkModeInit = store.getState().theme.isDarkTheme;
+      const isDarkThemeActive = isDarkThemeEnabled() || isThemedDarkModeInit;
 
       if (isDarkThemeActive) {
         document.documentElement.classList.add('dark');
+        toggleDarkTheme(true);
       }
     };
 

@@ -2,7 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { isDarkThemeEnabled } from '../../helpers/theme-helpers';
 
 const initialThemeState = {
-  isDarkTheme: isDarkThemeEnabled(),
+  isDarkTheme:
+    isDarkThemeEnabled() ||
+    (localStorage.getItem('newsDarkTheme') === null &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches),
 };
 
 const theme = createSlice({

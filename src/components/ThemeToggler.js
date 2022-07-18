@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkTheme } from '../helpers/theme-helpers';
 import { themeActions } from '../store/slices/theme-slice';
 
 const ThemeToggler = () => {
-  console.log('ev');
+  console.log('render toggler');
+
   const dispatch = useDispatch();
   const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
   const darkButtonClasses = `${isDarkTheme ? 'hidden' : ''} w-5 h-5`;
@@ -14,11 +14,6 @@ const ThemeToggler = () => {
     dispatch(themeActions.toggleDarkTheme());
     toggleDarkTheme();
   };
-
-  useEffect(() => {
-    // console.log('running');
-    // toggleDarkTheme();
-  }, [isDarkTheme]);
 
   return (
     <button
