@@ -4,20 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import NewsItem from './NewsItem';
 import { newsListActions } from '../../store/slices/news-slice';
 import Spinner from '../Spinner/Spinner';
-import useFetch from '../../hooks/use-fetch';
 import {
   getTransformedNews,
   applyGoodVibesFilter,
 } from '../../helpers/newsHelpers';
 import store from '../../store';
 import useFirstRender from '../../hooks/use-first-render';
+import useFetchParallel from '../../hooks/use-fetch-parallel';
 
 const NewsList = () => {
   const [triggerSearch, setTriggerSearch] = useState(false);
   const dispatch = useDispatch();
   const news = useSelector((state) => state.news.newsList);
   const countryCode = useSelector((state) => state.locale.countryCode);
-  const { isLoading, isFetchError, sendRequest } = useFetch();
+  const { isLoading, isFetchError, sendRequest } = useFetchParallel();
+
   const isFirstRender = useFirstRender();
 
   const fetchMoreNewsHandler = () => {
@@ -29,12 +30,8 @@ const NewsList = () => {
   const processNews = useCallback(
     (newsData) => {
       dispatch(newsListActions.setTotalResults(newsData.totalResults));
-      // const goodNews = applyGoodVibesFilter(newsData.results);
-      const transformedNews = getTransformedNews(newsData.results);
-
-      if (transformedNews.length === 0) {
-        return;
-      }
+      const goodNews = applyGoodVibesFilter(newsData.results);
+      const transformedNews = getTransformedNews(goodNews);
       dispatch(newsListActions.updateNewsList(transformedNews));
     },
     [dispatch]
@@ -45,9 +42,9 @@ const NewsList = () => {
       return;
     }
     sendRequest(
-      `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&language=en`,
-      null,
-      processNews
+      `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&country=${countryCode}`,
+      processNews,
+      10
     );
   }, [countryCode, sendRequest, processNews, triggerSearch]);
 

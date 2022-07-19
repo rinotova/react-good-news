@@ -15,10 +15,12 @@ const newsList = createSlice({
     },
     updateNewsList(state, action) {
       state.newsList = state.newsList.concat(action.payload);
-      state.newsPageAt = state.newsPageAt + 1;
     },
     resetPageAt(state) {
       state.newsPageAt = 1;
+    },
+    setPageAt(state, action) {
+      state.newsPageAt = action.payload;
     },
     setTotalResults(state, action) {
       state.totalResults = action.payload;

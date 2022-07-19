@@ -12,7 +12,6 @@ import { localeActions } from './store/slices/locale-slice';
 import { toggleDarkTheme } from './helpers/themeHelpers';
 import { isDarkThemeEnabled } from './helpers/themeHelpers';
 import store from './store';
-import Spinner from './components/Spinner/Spinner';
 
 function App() {
   const dispatch = useDispatch();
