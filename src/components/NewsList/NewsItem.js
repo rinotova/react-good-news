@@ -15,6 +15,7 @@ const NewsItem = ({ news }) => {
             href={news.urk}
             target="_blank"
             rel="noreferrer"
+            loading="lazy"
           >
             {news.headline}
           </a>

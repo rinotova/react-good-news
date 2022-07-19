@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import Sentimood from './sentimood';
 
 const timeSince = (date) => {
   const seconds = Math.floor((new Date() - date) / 1000);
@@ -31,11 +32,27 @@ export const getTransformedNews = (articles) => {
     return {
       id: uuidv4(),
       headline: pieceOfNews.title,
-      url: pieceOfNews.url,
-      urlToImage: pieceOfNews.urlToImage,
-      publishedAt: timeSince(new Date(pieceOfNews.publishedAt)),
-      publisher: pieceOfNews.source.name,
+      url: pieceOfNews.link,
+      urlToImage: pieceOfNews.image_url,
+      publishedAt: timeSince(new Date(pieceOfNews.pubDate)),
+      publisher: pieceOfNews.source_id,
     };
   });
   return transformedNews;
+};
+
+export const applyGoodVibesFilter = (articles) => {
+  const goodNews = [];
+  const sentiment = new Sentimood();
+
+  articles.forEach((article) => {
+    console.log(article.title);
+    console.log(sentiment.analyze(article.title).score);
+
+    if (sentiment.analyze(article.title).score > 0) {
+      goodNews.push(article);
+    }
+  });
+  console.log(goodNews);
+  return goodNews;
 };

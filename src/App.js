@@ -12,6 +12,7 @@ import { localeActions } from './store/slices/locale-slice';
 import { toggleDarkTheme } from './helpers/themeHelpers';
 import { isDarkThemeEnabled } from './helpers/themeHelpers';
 import store from './store';
+import Spinner from './components/Spinner/Spinner';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,8 +30,6 @@ function App() {
   setDarkThemeIfNecessary();
 
   useEffect(() => {
-    console.log('use effect app');
-
     const setCountryIfNecessary = async () => {
       let country = getCountryFromLocalStorage();
       if (!country) {
@@ -44,7 +43,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="dark:bg-gray-800 min-h-screen">
+    <div className="dark:!bg-gray-800 bg-white min-h-screen">
       <NavbarComp />
       <div className="max-w-[900px] flex flex-col my-0 mx-auto p-4 items-center">
         <InputSearch />
