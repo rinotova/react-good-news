@@ -1,20 +1,14 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import NewsItem from './NewsItem';
-import { newsListActions } from '../../store/slices/news-slice';
 import Spinner from '../Spinner/Spinner';
-import {
-  getTransformedNews,
-  applyGoodVibesFilter,
-} from '../../helpers/newsHelpers';
-import store from '../../store';
 import useFirstRender from '../../hooks/use-first-render';
 import useFetchParallel from '../../hooks/use-fetch-parallel';
+import useProcessNews from '../../hooks/use-process-news';
 
 const NewsList = () => {
   const [triggerSearch, setTriggerSearch] = useState(false);
-  const dispatch = useDispatch();
   const news = useSelector((state) => state.news.newsList);
   const countryCode = useSelector((state) => state.locale.countryCode);
   const { isLoading, isFetchError, sendRequest } = useFetchParallel();
@@ -27,15 +21,7 @@ const NewsList = () => {
     }
   };
 
-  const processNews = useCallback(
-    (newsData) => {
-      dispatch(newsListActions.setTotalResults(newsData.totalResults));
-      const goodNews = applyGoodVibesFilter(newsData.results);
-      const transformedNews = getTransformedNews(goodNews);
-      dispatch(newsListActions.updateNewsList(transformedNews));
-    },
-    [dispatch]
-  );
+  const { mapNews } = useProcessNews();
 
   useEffect(() => {
     if (countryCode === 'select') {
@@ -43,10 +29,10 @@ const NewsList = () => {
     }
     sendRequest(
       `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&country=${countryCode}`,
-      processNews,
-      10
+      mapNews,
+      7
     );
-  }, [countryCode, sendRequest, processNews, triggerSearch]);
+  }, [countryCode, sendRequest, mapNews, triggerSearch]);
 
   // Fetching news will kick in in the second render triggered by country change
   if (isFirstRender) {
@@ -76,7 +62,7 @@ const NewsList = () => {
           <InfiniteScroll
             dataLength={newsList.length}
             next={fetchMoreNewsHandler}
-            hasMore={newsList.length < store.getState().news.totalResults}
+            hasMore={newsList.length <= 50}
             loader={<Spinner />}
           >
             {newsList}

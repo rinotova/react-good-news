@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialNewsState = {
   newsList: [],
   newsPageAt: 1,
-  totalResults: 0,
 };
 
 const newsList = createSlice({
@@ -22,8 +21,8 @@ const newsList = createSlice({
     setPageAt(state, action) {
       state.newsPageAt = action.payload;
     },
-    setTotalResults(state, action) {
-      state.totalResults = action.payload;
+    setNewsList(state, action) {
+      state.newsList = action.payload;
     },
   },
 });

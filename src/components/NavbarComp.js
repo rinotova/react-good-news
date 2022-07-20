@@ -7,8 +7,8 @@ const NavbarComp = () => {
     <div className="min-w-full border-b-4 border-double border-gray-500 mb-8 pt-2">
       <Navbar fluid={true} rounded={true}>
         <Navbar.Brand href="/">
-          <div className="min-w-full font-lobster text-5xl dark:text-white">
-            The Good News
+          <div className="min-w-full font-lobster text-3xl md:text-4xl dark:text-white">
+            The (mostly) Good News
           </div>
         </Navbar.Brand>
         <Navbar.Toggle />

@@ -12,33 +12,37 @@ const useFetchParallel = () => {
     async (
       url,
       postProcessCallback = (responseJson) => responseJson,
-      numberOfCalls
+      numberOfCalls,
+      q,
+      setAsNewSearch
     ) => {
       try {
         setIsLoading(true);
+        const theUrl = q ? `${url}&q=${q}` : url;
         const fetchArray = [];
         const pageAt = store.getState().news.newsPageAt;
 
         for (let index = 0; index < numberOfCalls; index++) {
           fetchArray.push(
-            fetch(`${url}&page=${parseInt(index + pageAt, 10)}`).then(
+            fetch(`${theUrl}&page=${parseInt(index + pageAt, 10)}`).then(
               (response) => response.json()
             )
           );
         }
         let jsonResponses = await Promise.all(fetchArray);
-        let totalResults = 0;
         const mappedResponses = jsonResponses.map((jsonResponse) => {
-          totalResults =
-            totalResults === 0 ? jsonResponse.totalResults : totalResults;
           return jsonResponse.results;
         });
 
         const merged = [].concat.apply([], mappedResponses);
-        dispatch(newsListActions.setPageAt(pageAt + numberOfCalls));
+        if (setAsNewSearch) {
+          dispatch(newsListActions.setPageAt(numberOfCalls));
+        } else {
+          dispatch(newsListActions.setPageAt(pageAt + numberOfCalls));
+        }
         postProcessCallback({
           results: merged,
-          totalResults,
+          setAsNewSearch,
         });
       } catch (e) {
         setIsFetchError(e.message);
