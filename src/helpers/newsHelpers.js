@@ -45,10 +45,14 @@ export const applyGoodVibesFilter = (articles) => {
   const goodNews = [];
   const sentiment = new Sentimood();
 
+  console.log(articles);
+
   articles.forEach((article) => {
+    console.log(sentiment.analyze(article.title).score);
     if (sentiment.analyze(article.title).score > 0) {
       goodNews.push(article);
     }
   });
+  console.log(goodNews);
   return goodNews;
 };

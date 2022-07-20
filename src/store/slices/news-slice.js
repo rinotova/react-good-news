@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialNewsState = {
   newsList: [],
   newsPageAt: 1,
+  q: null,
 };
 
 const newsList = createSlice({
@@ -23,6 +24,9 @@ const newsList = createSlice({
     },
     setNewsList(state, action) {
       state.newsList = action.payload;
+    },
+    setQuery(state, action) {
+      state.q = action.payload;
     },
   },
 });

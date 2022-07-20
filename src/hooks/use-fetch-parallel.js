@@ -13,14 +13,14 @@ const useFetchParallel = () => {
       url,
       postProcessCallback = (responseJson) => responseJson,
       numberOfCalls,
-      q,
       setAsNewSearch
     ) => {
       try {
         setIsLoading(true);
-        const theUrl = q ? `${url}&q=${q}` : url;
+        const q = store.getState().news.q;
+        const theUrl = q ? `${url}&q=${encodeURIComponent(q)}` : url;
         const fetchArray = [];
-        const pageAt = store.getState().news.newsPageAt;
+        const pageAt = setAsNewSearch ? 1 : store.getState().news.newsPageAt;
 
         for (let index = 0; index < numberOfCalls; index++) {
           fetchArray.push(

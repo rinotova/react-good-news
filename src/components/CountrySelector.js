@@ -14,6 +14,8 @@ const CountrySelector = () => {
     if (countryCode === 'select') {
       return;
     }
+    document.querySelector('#newsInputSearch').value = '';
+    dispatch(newsListActions.setQuery(null));
     dispatch(newsListActions.resetPageAt());
     dispatch(newsListActions.resetNewsList());
     dispatch(localeActions.updateCountryCode(countryCode));

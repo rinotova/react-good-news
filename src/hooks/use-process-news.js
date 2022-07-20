@@ -11,6 +11,7 @@ const useProcessNews = () => {
 
   const mapNews = useCallback(
     (newsData) => {
+      console.log(newsData);
       const goodNews = applyGoodVibesFilter(newsData.results);
       const transformedNews = getTransformedNews(goodNews);
 
