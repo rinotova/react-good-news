@@ -45,10 +45,18 @@ export const applyGoodVibesFilter = (articles) => {
   const goodNews = [];
   const sentiment = new Sentimood();
 
-  articles.forEach((article) => {
-    if (sentiment.analyze(article.title).score > 0) {
+  for (const article of articles) {
+    let title = article.title;
+
+    // Language check
+    if (article.language !== 'english') {
+      // TODO title = await getEnglishTranslation();
+    }
+
+    // Sentiment analysis
+    if (sentiment.analyze(title).score > 0) {
       goodNews.push(article);
     }
-  });
+  }
   return goodNews;
 };

@@ -17,8 +17,11 @@ const useFetchParallel = () => {
     ) => {
       try {
         setIsLoading(true);
-        const q = store.getState().news.q;
-        const theUrl = q ? `${url}&q=${encodeURIComponent(q)}` : url;
+        const q = store.getState().news.q
+          ? encodeURIComponent(store.getState().news.q)
+          : null;
+        const qX = q ? q.trim().replace('%20', '%20OR%20') : null;
+        const theUrl = qX ? `${url}&q=${qX}` : url;
         const fetchArray = [];
         const pageAt = setAsNewSearch ? 1 : store.getState().news.newsPageAt;
 

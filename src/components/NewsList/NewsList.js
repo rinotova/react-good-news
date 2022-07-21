@@ -30,7 +30,7 @@ const NewsList = () => {
     sendRequest(
       `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&country=${countryCode}`,
       mapNews,
-      7
+      4
     );
   }, [countryCode, sendRequest, mapNews, triggerSearch]);
 
@@ -62,8 +62,7 @@ const NewsList = () => {
           <InfiniteScroll
             dataLength={newsList.length}
             next={fetchMoreNewsHandler}
-            hasMore={newsList.length <= 50}
-            loader={<Spinner />}
+            hasMore={newsList.length <= 30}
           >
             {newsList}
           </InfiniteScroll>

@@ -21,7 +21,7 @@ const InputSearch = () => {
     sendRequest(
       `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&country=${countryCode}`,
       mapNews,
-      7,
+      4,
       true
     );
   };
