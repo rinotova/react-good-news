@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialNewsState = {
   newsList: [],
-  newsPageAt: 1,
+  newsPageAt: null,
   q: null,
 };
 
@@ -17,7 +17,7 @@ const newsList = createSlice({
       state.newsList = state.newsList.concat(action.payload);
     },
     resetPageAt(state) {
-      state.newsPageAt = 1;
+      state.newsPageAt = null;
     },
     setPageAt(state, action) {
       state.newsPageAt = action.payload;

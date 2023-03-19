@@ -3,6 +3,26 @@ import store from '../store';
 import { newsListActions } from '../store/slices/news-slice';
 import { useDispatch } from 'react-redux';
 
+async function getNews(theUrl, numberOfCalls, nextP) {
+  const firstUrl = nextP ? `${theUrl}&page=${nextP}` : theUrl;
+  const firstResponseJson = await fetch(firstUrl).then((response) =>
+    response.json()
+  );
+  let nextPage = firstResponseJson.nextPage;
+  const results = [...firstResponseJson.results];
+  const calls = [].fill({ theUrl }, 0, numberOfCalls - 1);
+
+  for (const call of calls) {
+    const responseJson = await fetch(`${call.theUrl}&page=${nextPage}`).then(
+      (response) => response.json()
+    );
+    results.push(...responseJson.results);
+    nextPage = responseJson.nextPage;
+  }
+
+  return { results, nextPage };
+}
+
 const useFetchParallel = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchError, setIsFetchError] = useState(null);
@@ -22,29 +42,21 @@ const useFetchParallel = () => {
           : null;
         const qX = q ? q.trim().replace('%20', '%20OR%20') : null;
         const theUrl = qX ? `${url}&q=${qX}` : url;
-        const fetchArray = [];
-        const pageAt = setAsNewSearch ? 1 : store.getState().news.newsPageAt;
+        const pageAt = setAsNewSearch ? null : store.getState().news.newsPageAt;
+        console.log('here');
+        const { results, nextPage } = await getNews(
+          theUrl,
+          numberOfCalls,
+          pageAt
+        );
 
-        for (let index = 0; index < numberOfCalls; index++) {
-          fetchArray.push(
-            fetch(`${theUrl}&page=${parseInt(index + pageAt, 10)}`).then(
-              (response) => response.json()
-            )
-          );
-        }
-        let jsonResponses = await Promise.all(fetchArray);
-        const mappedResponses = jsonResponses.map((jsonResponse) => {
-          return jsonResponse.results;
-        });
-
-        const merged = [].concat.apply([], mappedResponses);
         if (setAsNewSearch) {
-          dispatch(newsListActions.setPageAt(numberOfCalls));
+          dispatch(newsListActions.setPageAt(null));
         } else {
-          dispatch(newsListActions.setPageAt(pageAt + numberOfCalls));
+          dispatch(newsListActions.setPageAt(nextPage));
         }
         postProcessCallback({
-          results: merged,
+          results,
           setAsNewSearch,
         });
       } catch (e) {
