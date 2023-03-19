@@ -1,12 +1,10 @@
 import { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCountryInLocalStorage } from '../helpers/countryHelpers';
+import { useDispatch } from 'react-redux';
 import { localeActions } from '../store/slices/locale-slice';
 import { newsListActions } from '../store/slices/news-slice';
 
 const CountrySelector = () => {
   const dispatch = useDispatch();
-  const countryState = useSelector((state) => state.locale.countryCode);
   const countrySelectorRef = useRef('');
 
   const changeCountryHandler = () => {
@@ -19,17 +17,14 @@ const CountrySelector = () => {
     dispatch(newsListActions.resetPageAt());
     dispatch(newsListActions.resetNewsList());
     dispatch(localeActions.updateCountryCode(countryCode));
-
-    setCountryInLocalStorage(countryCode);
   };
 
   return (
     <select
-      disabled
       ref={countrySelectorRef}
       onChange={changeCountryHandler}
       id='countries'
-      value={countryState}
+      value={'US'}
       className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4 md:mb-0'
     >
       <option value='select'>Selecy country</option>

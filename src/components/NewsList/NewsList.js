@@ -28,7 +28,7 @@ const NewsList = () => {
       return;
     }
     sendRequest(
-      `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&country=${countryCode}`,
+      `https://newsdata.io/api/1/news?language=en&apikey=${process.env.REACT_APP_NEWS_API_IO_KEY}&country=${countryCode}`,
       mapNews,
       4
     );
@@ -40,7 +40,7 @@ const NewsList = () => {
   }
 
   if (news.length === 0 && !isLoading) {
-    return <p className="mt-3 text-lg dark:text-white">No results found.</p>;
+    return <p className='mt-3 text-lg dark:text-white'>No results found.</p>;
   }
 
   if (news.length === 0 && isLoading) {
@@ -54,10 +54,10 @@ const NewsList = () => {
   return (
     <Fragment>
       {isLoading && <Spinner isFullScreen={true} />}
-      <h3 className="min-w-full text-left text-xl dark:text-slate-200">
+      <h3 className='min-w-full text-left text-xl dark:text-slate-200'>
         Headlines
       </h3>
-      <div className="relative min-w-full">
+      <div className='relative min-w-full'>
         <ul>
           <InfiniteScroll
             dataLength={newsList.length}

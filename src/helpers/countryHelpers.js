@@ -7,8 +7,3 @@ export const getUserCountryViaService = () => {
     resolve(responseJson.country);
   });
 };
-
-export const getCountryFromLocalStorage = () => localStorage.newsCountry;
-
-export const setCountryInLocalStorage = (countryCode) =>
-  (localStorage.newsCountry = countryCode);

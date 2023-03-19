@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCountryFromLocalStorage } from '../../helpers/countryHelpers';
 
 const initialLocaleState = {
-  countryCode: getCountryFromLocalStorage() || 'select',
+  countryCode: 'US',
 };
 
 const userLocale = createSlice({

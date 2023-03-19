@@ -10,7 +10,7 @@ async function getNews(theUrl, numberOfCalls, nextP) {
   );
   let nextPage = firstResponseJson.nextPage;
   const results = [...firstResponseJson.results];
-  const calls = [].fill({ theUrl }, 0, numberOfCalls - 1);
+  const calls = new Array(numberOfCalls).fill().map((val) => ({ theUrl }));
 
   for (const call of calls) {
     const responseJson = await fetch(`${call.theUrl}&page=${nextPage}`).then(
@@ -43,7 +43,7 @@ const useFetchParallel = () => {
         const qX = q ? q.trim().replace('%20', '%20OR%20') : null;
         const theUrl = qX ? `${url}&q=${qX}` : url;
         const pageAt = setAsNewSearch ? null : store.getState().news.newsPageAt;
-        console.log('here');
+
         const { results, nextPage } = await getNews(
           theUrl,
           numberOfCalls,
